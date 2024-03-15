@@ -1,0 +1,60 @@
+npm install express dotenv cookie-parser bcryptjs mongoose socket.io jsonwebtoken
+npm install nodemon --save-dev
+
+openssl rand -base64 32 // for generating a secure random key
+
+// In package.json
+
+// ...rest ot the code
+"type": "module"
+// ...rest ot the code
+
+This will help us using "import" keyword instead of "require" but we also have to add extension name at the end of each file
+otherwise we will get error e.g import { getUsersForSidebar } from '../controllers/user.controller.js'; dont forget to add ".js"
+
+***********Message.model.js
+import mongoose from 'mongoose';
+
+const messageSchema = new mongoose.Schema(
+  {
+    senderId: {
+      type: mongoose.Schema.Types.ObjectId, //these are showing that there will be id from User model
+      ref: 'User',
+      required: true,
+    },
+    receiverId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+  },
+  //timestamps: createdAt and updatedAt
+  { timestamps: true }
+);
+
+const Message = mongoose.model('Message', messageSchema);
+
+export default Message;
+
+**********Conversation model
+
+import mongoose from 'mongoose';
+
+const conversationSchema = new mongoose.Schema(
+  {
+    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    messages: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'Message', default: [] },
+    ],
+  },
+  { timestamps: true }
+);
+
+const Conversation = mongoose.model('Conversation', conversationSchema);
+
+export default Conversation;
+
