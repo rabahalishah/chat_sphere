@@ -2,6 +2,7 @@ import User from '../models/user.model.js';
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
+    //getting all users except the loggedIn one
     const filteredUser = await User.find({
       _id: { $ne: loggedInUserId },
     }).select('-password'); //$ne means not equal to...we want all user expect the

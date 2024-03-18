@@ -4,12 +4,12 @@ import cookieParser from 'cookie-parser';
 
 import authRoutes from './routes/auth.routes.js';
 import messageRoutes from './routes/message.routes.js';
-import userRoutes from './routes/user.routes.js'
+import userRoutes from './routes/user.routes.js';
 
 import connectToMongoDB from './db/connectToMongoDB.js';
+import { app, server } from './socket/socket.js';
 
 const PORT = process.env.PORT || 5000;
-const app = express();
 
 dotenv.config(); // to read variables from .env file
 app.use(express.json()); //to parse the values of JSON coming from req.body
@@ -23,7 +23,8 @@ app.get('/', (req, res) => {
   res.send('hello world!!!');
 });
 
-app.listen(PORT, () => {
+//here server is the socket server
+server.listen(PORT, () => {
   connectToMongoDB();
   console.log(`Listening to the server at port ${PORT}`);
 });

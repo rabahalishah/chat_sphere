@@ -3,14 +3,18 @@ import User from '../models/user.model.js';
 
 const protectedRoute = async (req, res, next) => {
   try {
+    //grabbing the token from cookies before accessing any protecting route
     const token = req.cookies.jwt;
+    //checkig whether the token exists or not
     if (!token) {
       res.status(401).json({ error: 'Unauthorized - No Token Provided' });
     }
+    //checking whethere the existing token is correct or not
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (!decoded) {
       return res.status(401).json({ error: 'Unauthorized - Invalid Token' });
     }
+    
 
     const user = await User.findById(decoded.userId).select('-password');
     //here userId is the id which we had passed to generateJwtAndSetCookies while signup and login

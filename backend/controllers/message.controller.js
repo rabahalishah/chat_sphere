@@ -1,11 +1,11 @@
 import Conversation from '../models/conversation.model.js';
 import Message from '../models/message.model.js';
+import { getReceiverSocketId, io } from '../socket/socket.js';
 export const sendMessage = async (req, res) => {
   try {
     //getting message from the usera as an input
     const { message } = req.body;
 
-    // const id = req.params.id; both are same
     //grabbing the receivers id from the url
     const { id: receiverId } = req.params; //renaming to receiverId
 
@@ -33,15 +33,21 @@ export const sendMessage = async (req, res) => {
       conversation.messages.push(newMessage._id);
     }
 
-    // SOCKET IO FUNCTIONALITY WE WILL GO HERE
-
     //saving data in database
     // await conversation.save();
     // await newMessage.save();
 
     //The below will run in parallel, resulting in optimizing the saving process.
-
     await Promise.all([conversation.save(), newMessage.save()]);
+
+    // SOCKET IO FUNCTIONALITY WE WILL GO HERE
+    const receiverSocketId = getReceiverSocketId(receiverId);
+
+    if (receiverSocketId) {
+      // io.to(<socket_id).emit(); is used to send event to specific client
+      io.to(receiverSocketId).emit('newMessage', newMessage);
+    }
+
     res.status(201).json(newMessage);
   } catch (error) {
     console.log('error inside Message controller: ', error.message);
@@ -63,11 +69,11 @@ export const getMessages = async (req, res) => {
     //  and its referecne to the message model. Here populate method will grab the content of the message so that we do not have
     // an extra request to get the message content.
 
-    if(!conversation){
-      return res.status(200).json([])
+    if (!conversation) {
+      return res.status(200).json([]);
     }
 
-    const messages = conversation.messages
+    const messages = conversation.messages;
 
     res.status(200).json(messages);
   } catch (error) {
