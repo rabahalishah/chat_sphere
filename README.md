@@ -24,3 +24,17 @@ Key Features:
 
 7. Deployment Like a Pro for Free:
    - The application provides easy deployment options, allowing users to deploy their chat application effortlessly and for free, making it accessible to a wide audience.
+
+# App UI Walk through
+# Login Page:
+![image](https://github.com/rabahalishah/chat_sphere/assets/117630286/0488cc6d-617a-4fa4-b9e6-6daa281eae8d)
+
+# Sign up Page
+![image](https://github.com/rabahalishah/chat_sphere/assets/117630286/e25cfe85-9045-44eb-aa5f-81d6bfe0019f)
+
+# Home Page
+![image](https://github.com/rabahalishah/chat_sphere/assets/117630286/0e6f66f8-c290-4b69-8a71-a437bcecd172)
+
+
+
+
